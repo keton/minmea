@@ -157,11 +157,24 @@ struct minmea_sentence_vtg {
 };
 
 struct minmea_sentence_zda {
-    struct minmea_time time;
-    struct minmea_date date;
-    int hour_offset;
-    int minute_offset;
+	struct minmea_time time;
+	struct minmea_date date;
+	int hour_offset;
+	int minute_offset;
 };
+
+//On embedded systems there's no timespec nor timegm
+#if defined (__CC_ARM) || defined(__AVR)
+
+#define timegm mktime
+
+struct timespec
+{
+	time_t tv_sec;
+	long int tv_nsec;
+};
+
+#endif
 
 /**
  * Calculate raw sentence checksum. Does not check sentence integrity.
