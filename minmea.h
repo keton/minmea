@@ -164,15 +164,20 @@ struct minmea_sentence_zda {
 };
 
 //On embedded systems there's no timespec nor timegm
-#if defined (__CC_ARM) || defined(__AVR)
+#if defined (__CC_ARM) || defined(__AVR) || defined (__arm__)
 
 #define timegm mktime
+
+//arm-gcc has struct timespec
+#ifndef __GNUC__
 
 struct timespec
 {
 	time_t tv_sec;
 	long int tv_nsec;
 };
+
+#endif
 
 #endif
 
